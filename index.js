@@ -7,6 +7,10 @@ dotenv.config();
 
 //routes
 const userRouter = require('./src/router/userRouter');
+const authRouter = require('./src/router/authRouter');
+const navbarRouter = require('./src/router/navbarRouter');
+const linkRouter = require('./src/router/linkRouter');
+const aboutRouter = require('./src/router/aboutRouter');
 
 
 const app = express();
@@ -19,6 +23,10 @@ app.use(fileUpload({useTempFiles: true}));
 app.use(cors());
 
 app.use('/api/user', userRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/navbar', navbarRouter);
+app.use('/api/link', linkRouter);
+app.use('/api/info', aboutRouter);
 
 const MONGO_URL = process.env.MONGO_URL;
 
