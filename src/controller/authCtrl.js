@@ -2,6 +2,7 @@ const JWT = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const User = require('../model/userModel');
+const { default: axios } = require('axios');
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
 
@@ -15,6 +16,55 @@ const transporter = nodemailer.createTransport({
 
 
 const authCtrl = {
+  // API to get makes by year
+  getYear: async (req, res) => {
+    const { year } = req.params;
+  
+    if (!year) {
+      return res.status(400).json({ error: "Year is required" });
+    }
+  
+    try {
+      const response = await axios.get(
+        `https://www.carqueryapi.com/api/0.3/?cmd=getMakes&year=${year}`,
+        { responseType: "text" } // muhim
+      );
+  
+      const clean = JSON.parse(
+        response.data.replace("var carquery = ", "").replace(/;$/, "")
+      );
+  
+      res.status(200).json(clean.Makes || []);
+    } catch (error) {
+      console.error("Error fetching makes by year:", error.message);
+      res.status(500).json({ error: "Failed to fetch makes by year" });
+    }
+  },  
+  getMakes: async (req, res) => {
+    const { make, year } = req.params;
+  
+    if (!make || !year) {
+      return res.status(400).json({ error: 'Make and year are required' });
+    }
+  
+    try {
+      const response = await axios.get(
+        `https://www.carqueryapi.com/api/0.3/?cmd=getModels&make=${make}&year=${year}`,
+        { responseType: "text" } // JSONP ni to'g'ri o'qish uchun
+      );
+  
+      // JSONP formatni tozalash
+      const clean = JSON.parse(
+        response.data.replace("var carquery = ", "").replace(/;$/, "")
+      );
+  
+      res.status(200).json(clean.Models || []);
+    } catch (error) {
+      console.error('Error fetching models:', error.message);
+      res.status(500).json({ error: 'Failed to fetch models' });
+    }
+  },
+  
   sendMail: async (req, res) => {
     const { email } = req.body;
     // Email tekshirish
