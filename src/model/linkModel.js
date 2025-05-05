@@ -19,6 +19,10 @@ const linkSchema = new mongoose.Schema({
         ref: 'Navbar',
         required: true  
     },
+    row: {
+        type: String,
+        default: '1'
+    },
     active: {
         type: Boolean,
         default: true 

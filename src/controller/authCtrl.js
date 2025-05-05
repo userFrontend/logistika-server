@@ -64,7 +64,6 @@ const authCtrl = {
       res.status(500).json({ error: 'Failed to fetch models' });
     }
   },
-  
   sendMail: async (req, res) => {
     const { email } = req.body;
     // Email tekshirish
@@ -155,11 +154,11 @@ Node Modules, [16.04.2025 7:44]
     }
   },
   signup: async (req, res) => {
-    const { fullname, email, phoneNumber, password } = req.body;
+    const {email, phoneNumber, password } = req.body;
     console.log("Received data:", req.body);
   
     // Basic validation
-    if (!password || (!email && !phoneNumber) || !fullname) {
+    if (!password || (!email && !phoneNumber)) {
       return res.status(400).json({ message: "All fields are required" });
     }
   
@@ -176,7 +175,6 @@ Node Modules, [16.04.2025 7:44]
   
       // Save new user
       const user = new User({
-        fullname,
         email,
         phoneNumber,
         password: hashedPassword,
