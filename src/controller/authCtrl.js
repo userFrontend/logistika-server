@@ -65,79 +65,104 @@ const authCtrl = {
     }
   },
   sendMail: async (req, res) => {
-    const { email } = req.body;
+    const {
+  email,
+  phone,
+  fromLocation,
+  fromLocationDetails,
+  toLocation,
+  toLocationDetails,
+  vehicleMake,
+  vehicleModel,
+  vehicleYear,
+  transportType,
+  isOperable,
+  firstAvailableDate
+} = req.body;
     // Email tekshirish
     if (!email) {
       return res.status(400).json({ message: 'Email is required' });
     }
-    const verificationCode =  Math.floor(100000 + Math.random() * 900000).toString();
     try {
-      const output = `
-      <div
-          style="
-              font-family: Arial, sans-serif;
-              max-width: 600px;
-              margin: 0 auto;
-              border: 1px solid #ddd;
-              border-radius: 5px;
-              overflow: hidden;
-          "
-          >
-          <div style="background-color: #f2f2f2; padding: 20px; text-align: center">
-              <img
-              src="https://static.vecteezy.com/system/resources/thumbnails/023/778/652/small_2x/ai-generated-ai-generative-realistic-illustration-of-different-skin-body-care-products-beauty-healthy-luxury-lifestyle-graphic-art-photo.jpg"
-              alt="Logo"
-              style="width: 300px; height: 200px; object-fit: cover"
-              />
-          </div>
-          <div
-              style="
-              background-color: #ebecf0;
-              color: #babecc;
-              padding: 15px 20px;
-              text-align: center;
-              "
-          >
-              <h2 style="margin: 0; font-size: 24px">
-              Код подтверждения для аккаунта
-              </h2>
-          </div>
-          <div style="padding: 20px; color: #333">
-              <p>Уважаемый пользователь!</p>
-              <p>
-              Мы получили запрос на доступ к вашему аккаунту
-              <strong>${email}</strong>. Ваш код подтверждения:
-              </p>
+      const {
+        senderEmail,
+  email,
+  phone,
+  fromLocation,
+  fromLocationDetails,
+  toLocation,
+  toLocationDetails,
+  vehicleMake,
+  vehicleModel,
+  vehicleYear,
+  transportType,
+  isOperable,
+  firstAvailableDate
+} = req.body;
 
-Node Modules, [16.04.2025 7:44]
+const output = `
+  <div
+    style="
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #fff;
+    "
+  >
+    <div
+      style="
+        background-color: #004080;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+      "
+    >
+      <h2 style="margin: 0; font-size: 22px">
+        Vehicle Transport Request
+      </h2>
+    </div>
+    <div style="padding: 20px; color: #333">
+      <ul style="list-style: none; padding: 0; margin: 0">
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Email:</strong> ${email}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Phone:</strong> ${phone}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>From (ZIP):</strong> ${fromLocation}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>From (Full):</strong> ${fromLocationDetails}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>To (ZIP):</strong> ${toLocation}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>To (Full):</strong> ${toLocationDetails}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Vehicle Make:</strong> ${vehicleMake}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Vehicle Model:</strong> ${vehicleModel}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Vehicle Year:</strong> ${vehicleYear}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Transport Type:</strong> ${transportType}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Operable:</strong> ${isOperable}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>First Available Date:</strong> ${firstAvailableDate}</li>
+      </ul>
+    </div>
+    <div
+      style="
+        background-color: #f2f2f2;
+        padding: 15px;
+        text-align: center;
+        color: #777;
+        font-size: 14px;
+      "
+    >
+      <p style="margin: 0">Regards,</p>
+      <p style="margin: 5px 0"><strong>AVOX Transport Team</strong></p>
+    </div>
+  </div>
+`;
 
 
-              <div style="text-align: center; margin: 10px 0">
-              <h2 style="font-size: 30px; color: red">${verificationCode}</h2>
-              </div>
-              <p>Ваш адрес ${email}. Вы получили это письмо для подтверждения входа.</p>
-              <p>Если вы не ввели этот адрес, значит кто-то пытается зарегистрироваться с помощью этой учетной записи. Пожалуйста, будьте осторожны</p>
-          </div>
-          <div
-              style="
-              background-color: #f2f2f2;
-              padding: 15px;
-              text-align: center;
-              color: #777;
-              "
-          >
-              <p style="margin: 0">С уважением,</p>
-              <p style="margin: 5px 0">Команда Beauty Brand</p>
-          </div>
-      </div>
-  `;
       
       // Email ma'lumotlari
       const mailOptions = {
-        from: '"Logistika" <aba06096@gmail.com>',
-        to: email, // Kimga yuboriladi
-        subject: 'Test Email',            // Xat mavzusi
-        text: 'Salom! Bu nodemailer orqali yuborilgan test xabari.', // Xat matni
+        from: '"AVOX" <aba06096@gmail.com>',
+        to: senderEmail, // Kimga yuboriladi
+        subject: 'Quote',
+        text: 'Please check this quote', 
         html: output// Agar HTML formatda yuborilsa
       };
       // Emailni jo'natish
