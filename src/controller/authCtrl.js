@@ -65,7 +65,8 @@ const authCtrl = {
     }
   },
   sendMail: async (req, res) => {
-    const {
+   const {
+        senderEmail,
   email,
   phone,
   fromLocation,
@@ -84,22 +85,6 @@ const authCtrl = {
       return res.status(400).json({ message: 'Email is required' });
     }
     try {
-      const {
-        senderEmail,
-  email,
-  phone,
-  fromLocation,
-  fromLocationDetails,
-  toLocation,
-  toLocationDetails,
-  vehicleMake,
-  vehicleModel,
-  vehicleYear,
-  transportType,
-  isOperable,
-  firstAvailableDate
-} = req.body;
-
 const output = `
   <div
     style="
