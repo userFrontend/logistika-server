@@ -159,13 +159,11 @@ const output = `
         }
       });
     } catch (error) {
-      console.error('Email yuborishda xatolik yuz berdi:', error);
       return false;
     }
   },
   signup: async (req, res) => {
     const {email, phoneNumber, password } = req.body;
-    console.log("Received data:", req.body);
   
     // Basic validation
     if (!password || (!email && !phoneNumber)) {
@@ -199,7 +197,7 @@ const output = `
       );
   
       res.status(201).json({
-        message: "Регистрация прошла успешно",
+        message: "Signup seccessfully",
         user: { _id: user._id, email, phoneNumber },
         token,
       });
@@ -222,14 +220,14 @@ const output = `
       const user = await User.findOne({ $or: [{ email }, { phoneNumber }] });
 
       if (!user) {
-        return res.status(400).json({ message: 'Пользователь не найден' });
+        return res.status(400).json({ message: 'User not found!' });
       }
 
       // Compare passwords
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
-        return res.status(400).json({ message: 'Логин или пароль неверны' });
+        return res.status(400).json({ message: 'Login or password incorrect' });
       }
 
       // Generate JWT token
@@ -240,12 +238,12 @@ const output = `
       );
 
       res.status(200).json({
-        message: 'Авторизация прошла успешно',
+        message: 'Login successfully',
         user: {_id: user._id, email: user.email, phoneNumber: user.phoneNumber },
         token,
       });
     } catch (error) {
-      res.status(500).json({ message: 'Внутренняя ошибка сервера' });
+      res.status(500).json({ message: 'Error server' });
     }
   },
 
