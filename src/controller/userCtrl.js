@@ -42,8 +42,9 @@ const userCtl = {
     },
     update: async (req, res) => {
         const {id} = req.params
+        const findUser = await User.findById(req.user.id)
         try {
-            if(id === req.user._id || req.userIsAdmin){
+            if(id === findUser._id || findUser.role === 'admin'){
                 const updateUser = await User.findById(id)
                 if(req.body.password && (req.body.password != "")){
                     const hashedPassword = await bcrypt.hash(req.body.password, 10);
