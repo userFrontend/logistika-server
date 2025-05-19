@@ -10,6 +10,9 @@ const aboutSchema = new mongoose.Schema({
         type: String,
         required: true 
     },
+    homeImg: String,
+    homeTitle: String,
+    homeContent: String,
     telegram: String,
     instagram: String,
     twitter: String,
