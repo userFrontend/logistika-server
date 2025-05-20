@@ -25,15 +25,6 @@ const categoryCtrl = {
             if(!name){
                 return res.status(403).json({message: 'Please fill all lines'})
             }
-            const {image} = req.files;
-            if(image) {
-                const createdImage = await cloudinary.v2.uploader.upload(image.tempFilePath, {
-                    folder: 'AVOX'
-                });
-                removeTemp(image.tempFilePath);
-                const imag = {public_id: createdImage.public_id, url: createdImage.secure_url};
-                req.body.image = imag;
-            }
             const category = new Category(req.body)
             await category.save()
             res.status(201).json({message: 'new Category', category})
@@ -45,7 +36,7 @@ const categoryCtrl = {
     get: async (req, res) => {
         try {
             const categorys = await Category.find()
-            res.status(200).json({message: 'All categorys', getAll: categorys})
+            res.status(200).json({message: 'All categorys', data: categorys})
         } catch (error) {
             res.status(503).json({message: error.message})
         }

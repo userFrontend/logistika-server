@@ -69,13 +69,11 @@ const BlogCtrl = {
             if(!deleteBlog){
                 return res.status(400).send({message: 'Blog not found'})
             }
-            if(deleteBlog.photos.length > 0){
-                deleteBlog.photos.map(async pic => {
-                    await cloudinary.v2.uploader.destroy(pic.public_id, async (err) =>{
-                        if(err){
-                            throw err
-                        }
-                    })
+            if(deleteBlog.image){
+                await cloudinary.v2.uploader.destroy(deleteBlog.image.public_id, async (err) =>{
+                    if(err){
+                        throw err
+                    }
                 })
             }
             res.status(200).send({message: 'Blog deleted', data: deleteBlog})
@@ -96,10 +94,6 @@ const BlogCtrl = {
             if(req.files){
                 const {image} = req.files;
                 if(image){
-                    const format = image.mimetype.split('/')[1];
-                    if(format !== 'png' && format !== 'jpeg') {
-                        return res.status(403).json({message: 'file format incorrect'})
-                    }
                     const imagee = await cloudinary.v2.uploader.upload(image.tempFilePath, {
                         folder: 'AVOX'
                     }, async (err, result) => {
@@ -110,17 +104,15 @@ const BlogCtrl = {
                             return result
                         }
                     })
-                    if(updateBlog.photos.length > 0){
-                        updateBlog.photos.map(async pic => {
-                            await cloudinary.v2.uploader.destroy(pic.public_id, async (err) =>{
-                                if(err){
-                                    throw err
-                                }
-                            })
+                    if(updateBlog.image){
+                        await cloudinary.v2.uploader.destroy(updateBlog.image.public_id, async (err) =>{
+                            if(err){
+                                throw err
+                            }
                         })
                     }
                     const imag = {public_id : imagee.public_id, url: imagee.secure_url}
-                    req.body.photos = imag;
+                    req.body.image = imag;
                 }
                 }
             const newBlog= await Blog.findByIdAndUpdate(id, req.body, {new: true})

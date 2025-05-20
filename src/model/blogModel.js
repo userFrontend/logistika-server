@@ -5,23 +5,23 @@ const blogSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-        type: {
-            type: String,
-            required: true
-        },
-        categoryId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Category',
-            required: true
-        },
+        type: String,
+        read: String,
+        categoryIds: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Category',
+                required: true,
+            }
+        ],
         authorId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true
         },
         image: {
-            type: Array,
-            required: true
+            type: Object,
+            default: null
         },
         content: {
             type: String,
