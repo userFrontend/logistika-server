@@ -11,6 +11,8 @@ const authRouter = require('./src/router/authRouter');
 const navbarRouter = require('./src/router/navbarRouter');
 const linkRouter = require('./src/router/linkRouter');
 const aboutRouter = require('./src/router/aboutRouter');
+const categoryRouter = require('./src/router/categoryRouter');
+const blogRouter = require('./src/router/blogRouter');
 
 
 const app = express();
@@ -27,6 +29,8 @@ app.use('/api/auth', authRouter);
 app.use('/api/navbar', navbarRouter);
 app.use('/api/link', linkRouter);
 app.use('/api/info', aboutRouter);
+app.use('/api/category', categoryRouter);
+app.use('/api/blog', blogRouter);
 
 const MONGO_URL = process.env.MONGO_URL;
 

@@ -1,26 +1,26 @@
 const mongoose = require('mongoose');
 
-const carSchema = new mongoose.Schema({
+const blogSchema = new mongoose.Schema({
         name: {
             type: String,
             required: true
         },
-        method: {
+        type: {
             type: String,
-            default: 'car'
+            required: true
         },
         categoryId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'Category',
+            required: true
         },
         authorId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true
         },
-        photos: {
+        image: {
             type: Array,
-            default: [],
             required: true
         },
         content: {
@@ -35,4 +35,4 @@ const carSchema = new mongoose.Schema({
 {timestamps: true},
 )
 
-module.exports = mongoose.model("Car", carSchema)
+module.exports = mongoose.model("Blog", blogSchema)

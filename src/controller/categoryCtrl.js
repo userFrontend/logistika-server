@@ -16,11 +16,7 @@ const removeTemp = (pathes) => {
   }
 
 const Category = require("../model/categoryModel")
-const Sub = require("../model/subModel")
-const Car = require("../model/carModel")
-const Type = require("../model/typeModel")
-const Work = require("../model/workModel")
-const Fashion = require("../model/fashionModel")
+const Blog = require("../model/blogModel")
 
 const categoryCtrl = {
     add: async (req, res) => {
@@ -31,12 +27,8 @@ const categoryCtrl = {
             }
             const {image} = req.files;
             if(image) {
-                const format = image.mimetype.split('/')[1];
-                if (format !== 'png' && format !== 'jpeg') {
-                    return res.status(403).json({message: 'File format incorrect'});
-                }
                 const createdImage = await cloudinary.v2.uploader.upload(image.tempFilePath, {
-                    folder: 'OLX'
+                    folder: 'AVOX'
                 });
                 removeTemp(image.tempFilePath);
                 const imag = {public_id: createdImage.public_id, url: createdImage.secure_url};
@@ -58,50 +50,6 @@ const categoryCtrl = {
             res.status(503).json({message: error.message})
         }
     },
-    // delete: async (req, res) => {
-    //     const {id} = req.params
-    //     if(!id){
-    //         return res.status(403).json({message: 'insufficient information'})
-    //     }
-        
-    //     try {
-    //         const delCategory = await Category.findById(id)
-    //         if(!delCategory){
-    //             return res.status(400).send({message: 'Category not found'})
-    //         }
-            
-    //         // if(delCategory.image){
-    //         //         await cloudinary.v2.uploader.destroy(delCategory.image.public_id, async (err) =>{
-    //         //             if(err){
-    //         //                 throw err
-    //         //             }
-    //         //         })
-    //         // }
-    //         const findArrType = []
-    //         const findSub = await Sub.find({categoryId: id})
-    //         for (const sub of findSub) {
-    //             const findType = await Type.find({subId: sub._id})
-    //             const findCategory = await Category.find({subId: sub._id})
-    //             const findFashion = await Fashion.find({subId: sub._id})
-    //             const findWork = await Work.find({subId: sub._id})
-    //             findArrType.push(findType)
-    //         }
-    //         for (const type of findArrType) {
-    //             const findCategory = await Category.find({categoryType: type._id})
-    //             const findFashion = await Fashion.find({categoryType: type._id})
-    //             const findWork = await Work.find({categoryType: type._id})
-    //             findArrType.push(findType)
-    //         }
-    //         console.log(findArrType);
-            
-    //         return console.log(findSub);
-    //         const subDel = await Sub.deleteMany({categoryId: id})
-    //         // await Sub.deleteMany({categoryId: id})
-    //         res.status(200).send({message: 'Gallary deleted', delCategory})
-    //     } catch (error) {
-    //         res.status(503).json({message: error.message})
-    //     }
-    // },
     delete: async (req, res) => {
         const {id} = req.params
         if(!id){
@@ -120,7 +68,7 @@ const categoryCtrl = {
                     }
                 })
             }
-            res.status(200).send({message: 'Category deleted', deleteCategory})
+            res.status(200).send({message: 'Category deleted', data: deleteCategory})
         } catch (error) {
             res.status(503).json({message: error.message})
         }
@@ -138,12 +86,8 @@ const categoryCtrl = {
             if(req.files){
                 const {image} = req.files;
                 if(image){
-                    const format = image.mimetype.split('/')[1];
-                    if(format !== 'png' && format !== 'jpeg') {
-                        return res.status(403).json({message: 'file format incorrect'})
-                    }
                     const imagee = await cloudinary.v2.uploader.upload(image.tempFilePath, {
-                        folder: 'OLX'
+                        folder: 'AVOX'
                     }, async (err, result) => {
                         if(err){
                             throw err
@@ -164,7 +108,7 @@ const categoryCtrl = {
                 }
                 }
             const newCategory = await Category.findByIdAndUpdate(id, req.body, {new: true})
-            res.status(200).send({message: 'Update successfully', newCategory})
+            res.status(200).send({message: 'Update successfully', data: newCategory})
         } catch (error) {
             res.status(503).json({message: error.message})
         }
