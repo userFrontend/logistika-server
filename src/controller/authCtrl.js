@@ -114,9 +114,9 @@ const output = `
         <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Email:</strong> ${email}</li>
         <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Phone:</strong> ${phone}</li>
         <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>From (ZIP):</strong> ${fromLocation}</li>
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>From (Full):</strong> ${fromLocationDetails}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>From (Full):</strong> ${fromLocationDetails.slice(0, -6)}</li>
         <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>To (ZIP):</strong> ${toLocation}</li>
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>To (Full):</strong> ${toLocationDetails}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>To (Full):</strong> ${toLocationDetails.slice(0, -6)}</li>
         <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Vehicle Make:</strong> ${vehicleMake}</li>
         <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Vehicle Model:</strong> ${vehicleModel}</li>
         <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Vehicle Year:</strong> ${vehicleYear}</li>
