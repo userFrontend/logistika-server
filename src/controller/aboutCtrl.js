@@ -1,4 +1,20 @@
 const About = require("../model/aboutModel")
+const cloudinary = require('cloudinary')
+const fs = require('fs');
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET,
+  })
+
+const removeTemp = (pathes) => {
+    fs.unlink(pathes, err => {
+      if(err){
+        throw err
+      }
+    })
+  }
 
 const aboutCtrl = {
     add: async (req, res) => {
