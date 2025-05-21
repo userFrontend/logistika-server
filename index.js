@@ -17,12 +17,29 @@ const blogRouter = require('./src/router/blogRouter');
 
 const app = express();
 const PORT = process.env.PORT || 4001;
+const allowedOrigins = [
+  'http://127.0.0.1:5173',
+  'http://localhost:5173',
+  'https://avoxs.netlify.app',
+];
 
 //middlewares
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(fileUpload({useTempFiles: true}));
-app.use(cors());
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Agar origin undefined bo‘lsa (masalan, Postman), ruxsat beramiz
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log('Blocked CORS for origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // cookie yoki auth header uchun kerak
+}));
 
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
