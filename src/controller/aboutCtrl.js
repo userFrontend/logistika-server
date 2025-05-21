@@ -82,8 +82,8 @@ const aboutCtrl = {
                             return result
                         }
                     })
-                    if(updateBlog.homeImg){
-                        await cloudinary.v2.uploader.destroy(updateBlog.homeImg.public_id, async (err) =>{
+                    if(updateWork.homeImg){
+                        await cloudinary.v2.uploader.destroy(updateWork.homeImg.public_id, async (err) =>{
                             if(err){
                                 throw err
                             }
