@@ -114,7 +114,7 @@ const BlogCtrl = {
                     const imag = {public_id : imagee.public_id, url: imagee.secure_url}
                     req.body.image = imag;
                 }
-                }
+            }
             const newBlog= await Blog.findByIdAndUpdate(id, req.body, {new: true})
             res.status(200).send({message: 'Update successfully', data: newBlog})
         } catch (error) {

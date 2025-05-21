@@ -5,7 +5,7 @@ const aboutCtrl = {
         try {
             const work = new About(req.body)
             await work.save()
-            res.status(201).json({message: 'new work', work})
+            res.status(201).json({message: 'New About', data: work})
         } catch (error) {
             res.status(503).json({message: error.message})
         }
@@ -27,9 +27,16 @@ const aboutCtrl = {
         try {
             const deleteWork = await About.findByIdAndDelete(id)
             if(!deleteWork){
-                return res.status(400).send({message: 'Work not found'})
+                return res.status(400).send({message: 'About not found'})
             }
-            res.status(200).send({message: 'Work deleted', deleteWork})
+             if(deleteWork.homeImg){
+                await cloudinary.v2.uploader.destroy(deleteBlog.image.public_id, async (err) =>{
+                    if(err){
+                        throw err
+                    }
+                })
+            }
+            res.status(200).send({message: 'About deleted', data: deleteWork})
         } catch (error) {
             res.status(503).json({message: error.message})
         }
@@ -42,10 +49,36 @@ const aboutCtrl = {
         try {
             const updateWork = await About.findById(id)
             if(!updateWork){
-                return res.status(400).send({message: 'work not found'})
+                return res.status(400).send({message: 'About not found'})
+            }
+            if(req.files){
+                const {image} = req.files;
+                console.log(image);
+                
+                if(image){
+                    const imagee = await cloudinary.v2.uploader.upload(image.tempFilePath, {
+                        folder: 'AVOX'
+                    }, async (err, result) => {
+                        if(err){
+                            throw err
+                        } else {
+                            removeTemp(image.tempFilePath)
+                            return result
+                        }
+                    })
+                    if(updateBlog.homeImg){
+                        await cloudinary.v2.uploader.destroy(updateBlog.homeImg.public_id, async (err) =>{
+                            if(err){
+                                throw err
+                            }
+                        })
+                    }
+                    const imag = {public_id : imagee.public_id, url: imagee.secure_url}
+                    req.body.homeImg = imag;
+                }
             }
             const newWork = await About.findByIdAndUpdate(id, req.body, {new: true})
-            res.status(200).send({message: 'Update successfully', newWork})
+            res.status(200).send({message: 'Update successfully', data: newWork})
         } catch (error) {
             res.status(503).json({message: error.message})
         }

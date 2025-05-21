@@ -10,9 +10,13 @@ const aboutSchema = new mongoose.Schema({
         type: String,
         required: true 
     },
-    homeImg: String,
+    homeImg: {
+        type: Object,
+        default: null
+    },
     homeTitle: String,
     homeContent: String,
+    color: String,
     telegram: String,
     instagram: String,
     twitter: String,
