@@ -42,26 +42,40 @@ const categoryCtrl = {
         }
     },
     delete: async (req, res) => {
-        const {id} = req.params
-        if(!id){
-            return res.status(403).json({message: 'insufficient information'})
+        const { id } = req.params;
+
+        if (!id) {
+        return res.status(403).json({ message: "insufficient information" });
         }
-        
+
         try {
-            const deleteCategory = await Category.findByIdAndDelete(id)
-            if(!deleteCategory){
-                return res.status(400).send({message: 'Category not found'})
+        // Kategoriyani topib o‘chirish
+        const deletedCategory = await Category.findByIdAndDelete(id);
+        if (!deletedCategory) {
+            return res.status(400).json({ message: "Category not found" });
+        }
+
+        // Ushbu categoryga tegishli bloglarni olish
+        const relatedBlogs = await Blog.find({ categoryId: id });
+
+        // Har bir blogni o‘chirish + rasmni cloudinary'dan o‘chirish
+        for (const blog of relatedBlogs) {
+            if (blog.image?.public_id) {
+            await cloudinary.v2.uploader.destroy(blog.image.public_id);
             }
-            if(deleteCategory.image){
-                await cloudinary.v2.uploader.destroy(deleteCategory.image.public_id, async (err) =>{
-                    if(err){
-                        throw err
-                    }
-                })
-            }
-            res.status(200).send({message: 'Category deleted', data: deleteCategory})
+            await Blog.findByIdAndDelete(blog._id);
+        }
+
+        res.status(200).json({
+            message: "Category and its related blogs deleted",
+            data: {
+            category: deletedCategory,
+            deletedBlogsCount: relatedBlogs.length,
+            },
+        });
         } catch (error) {
-            res.status(503).json({message: error.message})
+        console.error("Delete error:", error);
+        res.status(503).json({ message: error.message });
         }
     },
     update: async (req, res) => {

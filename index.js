@@ -13,6 +13,7 @@ const linkRouter = require('./src/router/linkRouter');
 const aboutRouter = require('./src/router/aboutRouter');
 const categoryRouter = require('./src/router/categoryRouter');
 const blogRouter = require('./src/router/blogRouter');
+const reviewRouter = require('./src/router/reviewRouter');
 
 
 const app = express();
@@ -48,6 +49,7 @@ app.use('/api/link', linkRouter);
 app.use('/api/info', aboutRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/blog', blogRouter);
+app.use('/api/review', reviewRouter);
 
 const MONGO_URL = process.env.MONGO_URL;
 
