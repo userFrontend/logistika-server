@@ -27,7 +27,7 @@ const categoryCtrl = {
             }
             const category = new Category(req.body)
             await category.save()
-            res.status(201).json({message: 'new Category', category})
+            res.status(201).json({message: 'new Category', data: category})
         } catch (error) { 
             res.status(503).json({message: error.message})
         }

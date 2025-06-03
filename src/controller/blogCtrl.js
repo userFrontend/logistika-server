@@ -33,7 +33,7 @@ const BlogCtrl = {
             }
             const blog = new Blog(req.body);
             await blog.save();
-            res.status(201).json({message: 'new Blog', Blog});
+            res.status(201).json({message: 'new Blog', data: blog});
         } catch (error) {
             res.status(503).json({message: error.message});
         }
