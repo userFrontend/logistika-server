@@ -49,29 +49,14 @@ const categoryCtrl = {
         }
 
         try {
-        // Kategoriyani topib o‘chirish
         const deletedCategory = await Category.findByIdAndDelete(id);
         if (!deletedCategory) {
             return res.status(400).json({ message: "Category not found" });
         }
 
-        // Ushbu categoryga tegishli bloglarni olish
-        const relatedBlogs = await Blog.find({ categoryId: id });
-
-        // Har bir blogni o‘chirish + rasmni cloudinary'dan o‘chirish
-        for (const blog of relatedBlogs) {
-            if (blog.image?.public_id) {
-            await cloudinary.v2.uploader.destroy(blog.image.public_id);
-            }
-            await Blog.findByIdAndDelete(blog._id);
-        }
-
         res.status(200).json({
             message: "Category and its related blogs deleted",
-            data: {
-            category: deletedCategory,
-            deletedBlogsCount: relatedBlogs.length,
-            },
+            data: deletedCategory
         });
         } catch (error) {
         console.error("Delete error:", error);
