@@ -18,19 +18,23 @@ const reviewRouter = require('./src/router/reviewRouter');
 
 const app = express();
 const PORT = process.env.PORT || 18012;
+const allowedOrigins = [
+  'http://127.0.0.1:5173',
+  'http://localhost:5173',
+  'https://avoxs.netlify.app',
+  'https://avox-beta.vercel.app',
+  'https://autovehicleoperationexpress.com',
+];
+
 //middlewares
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(fileUpload({useTempFiles: true}));
 
-const corsOptions = {
-  origin: 'https://avox-beta.vercel.app',
+app.use(cors({
+  origin: allowedOrigins,
   credentials: true,
-  optionsSuccessStatus: 200, // eski brauzerlar uchun
-};
-
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+}));
 
 
 app.use('/api/user', userRouter);
