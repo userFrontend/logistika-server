@@ -31,10 +31,23 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(fileUpload({useTempFiles: true}));
 
-app.use(cors({
-  origin: allowedOrigins,
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Postman yoki serverda "origin" bo'lmasligi mumkin
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log('❌ Blocked CORS for origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-}));
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Preflight (OPTIONS) so‘rovlarni ham qo‘llab-quvvatlash
+
 
 
 app.use('/api/user', userRouter);
