@@ -17,7 +17,7 @@ const reviewRouter = require('./src/router/reviewRouter');
 
 
 const app = express();
-const PORT = process.env.PORT || 4001;
+const PORT = process.env.PORT || 18012;
 const allowedOrigins = [
   'http://127.0.0.1:5173',
   'http://localhost:5173',
