@@ -23,10 +23,16 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(fileUpload({useTempFiles: true}));
 
-app.use(cors({
+const corsOptions = {
   origin: 'https://avox-beta.vercel.app',
   credentials: true,
-}));
+  optionsSuccessStatus: 200, // eski brauzerlar uchun
+};
+
+app.use(cors(corsOptions));
+
+// 👉 OPTIONS so‘rovlarga ham ruxsat berish
+app.options('*', cors(corsOptions));
 
 
 app.use('/api/user', userRouter);
