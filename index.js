@@ -30,8 +30,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-// 👉 OPTIONS so‘rovlarga ham ruxsat berish
 app.options('*', cors(corsOptions));
 
 
