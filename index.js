@@ -24,6 +24,7 @@ const allowedOrigins = [
   'https://avoxs.netlify.app',
   'https://avox-beta.vercel.app',
   'https://autovehicleoperationexpress.com',
+  'https://www.autovehicleoperationexpress.com',
 ];
 
 //middlewares
