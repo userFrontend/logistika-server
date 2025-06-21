@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 4001;
 const allowedOrigins = [
   'http://127.0.0.1:5173',
   'http://localhost:5173',
-  'https://logistika-client.vercel.app',
+  'https://avoxs.vercel.app',
   'https://avoxs.netlify.app',
   'https://avox-beta.vercel.app',
   'https://autovehicleoperationexpress.com',
@@ -35,16 +35,16 @@ app.use(fileUpload({useTempFiles: true}));
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Agar origin undefined bo‘lsa (masalan, Postman), ruxsat beramiz
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ''))) {
       callback(null, true);
     } else {
       console.log('Blocked CORS for origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, // cookie yoki auth header uchun kerak
+  credentials: true,
 }));
+
 
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
