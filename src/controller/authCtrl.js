@@ -36,7 +36,6 @@ const authCtrl = {
   
       res.status(200).json(clean.Makes || []);
     } catch (error) {
-      console.error("Error fetching makes by year:", error.message);
       res.status(500).json({ error: "Failed to fetch makes by year" });
     }
   },  
@@ -60,7 +59,6 @@ const authCtrl = {
   
       res.status(200).json(clean.Models || []);
     } catch (error) {
-      console.error('Error fetching models:', error.message);
       res.status(500).json({ error: 'Failed to fetch models' });
     }
   },
@@ -81,7 +79,6 @@ const authCtrl = {
   firstAvailableDate
 } = req.body;
 
-console.log(req.body);
 
     // Email tekshirish
     if (!email) {
@@ -205,13 +202,11 @@ const output = `
         token,
       });
     } catch (error) {
-      console.error("Signup Error:", error);
       res.status(500).json({ message: "Internal server error" });
     }
   },
   login: async (req, res) => {
     const { email, phoneNumber, password } = req.body;
-    console.log(req.body);
     
     // Basic validation
     if (!password || (!email && !phoneNumber)) {
@@ -255,7 +250,6 @@ const output = `
   
     try {
       // 1. Loglash (debug uchun)
-      console.log("Google Auth Request Body:", req.body);
   
       // 2. Foydalanuvchini qidirish
       const findUser = await User.findOne({ email });
@@ -293,7 +287,6 @@ const output = `
   
     } catch (error) {
       // 4. Xatolikni qaytarish
-      console.error("Google Auth Error:", error);
       return res.status(503).json({ message: "Серверная ошибка. Попробуйте позже." });
     }
   },
@@ -331,7 +324,6 @@ const output = `
         res.status(400).json({ message: 'Email or phone number is required' });
       }
     } catch (error) {
-      console.error(error);
       res.status(500).json({ message: 'Failed to send password reset code' });
     }
   },
