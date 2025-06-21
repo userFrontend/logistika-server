@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,       // O'z email manzilingiz
-    pass: "sbyt ueey rlwj kfgm", // Email parolingiz yoki App password
+    pass: "psev gqgz rtde divr", // Email parolingiz yoki App password
   },
 });
 
@@ -80,6 +80,9 @@ const authCtrl = {
   isOperable,
   firstAvailableDate
 } = req.body;
+
+console.log(req.body);
+
     // Email tekshirish
     if (!email) {
       return res.status(400).json({ message: 'Email is required' });
@@ -111,18 +114,18 @@ const output = `
     </div>
     <div style="padding: 20px; color: #333">
       <ul style="list-style: none; padding: 0; margin: 0">
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Email:</strong> ${email}</li>
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Phone:</strong> ${phone}</li>
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>From (ZIP):</strong> ${fromLocation}</li>
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>From (Full):</strong> ${fromLocationDetails.slice(0, -6)}</li>
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>To (ZIP):</strong> ${toLocation}</li>
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>To (Full):</strong> ${toLocationDetails.slice(0, -6)}</li>
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Vehicle Make:</strong> ${vehicleMake}</li>
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Vehicle Model:</strong> ${vehicleModel}</li>
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Vehicle Year:</strong> ${vehicleYear}</li>
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Transport Type:</strong> ${transportType}</li>
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Operable:</strong> ${isOperable}</li>
-        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>First Available Date:</strong> ${firstAvailableDate}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Email:</strong> ${email || ""}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Phone:</strong> ${phone || ""}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>From (ZIP):</strong> ${fromLocation || ""}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>From (Full):</strong> ${fromLocationDetails || ""}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>To (ZIP):</strong> ${toLocation || ""}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>To (Full):</strong> ${toLocationDetails || ""}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Vehicle Make:</strong> ${vehicleMake || ""}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Vehicle Model:</strong> ${vehicleModel || ""}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Vehicle Year:</strong> ${vehicleYear || ""}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Transport Type:</strong> ${transportType || ""}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>Operable:</strong> ${isOperable || ""}</li>
+        <li style="margin-bottom: 10px;"><span style="color: #004080;">●</span> <strong>First Available Date:</strong> ${firstAvailableDate || ""}</li>
       </ul>
     </div>
     <div
@@ -153,13 +156,13 @@ const output = `
       // Emailni jo'natish
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
-          res.status(403).json({ message: 'sent failed' });
+          res.status(403).json({ message: 'sent failed', error});
         } else {
           res.status(200).json({ message: 'sent successfully' });
         }
       });
     } catch (error) {
-      return false;
+      res.status(500).json(error);
     }
   },
   signup: async (req, res) => {
