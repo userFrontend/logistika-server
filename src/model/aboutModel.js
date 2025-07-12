@@ -18,6 +18,7 @@ const aboutSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    private: String,
     homeTitle: String,
     homeContent: String,
     color: String,
