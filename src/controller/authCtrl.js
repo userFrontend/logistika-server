@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,       // O'z email manzilingiz
-    pass: "psev gqgz rtde divr", // Email parolingiz yoki App password
+    pass: "mwta gqqh whxh dlwv", // Email parolingiz yoki App password
   },
 });
 
@@ -154,6 +154,108 @@ const output = `
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
           res.status(403).json({ message: 'sent failed', error});
+        } else {
+          res.status(200).json({ message: 'sent successfully' });
+        }
+      });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+  sendContact: async (req, res) => {
+   const {
+        senderEmail,
+        email,
+        phone,
+        name,
+        subject,
+        message,
+    } = req.body;
+
+
+    // Email tekshirish
+    if (!email) {
+      return res.status(400).json({ message: 'Email is required' });
+    }
+    try {
+    const output = `
+      <div
+        style="
+          font-family: Arial, sans-serif;
+          max-width: 600px;
+          margin: 0 auto;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          overflow: hidden;
+          background-color: #fff;
+        "
+      >
+        <div
+          style="
+            background-color: #004080;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+          "
+        >
+          <h2 style="margin: 0; font-size: 22px">
+            New Contact Form Submission
+          </h2>
+        </div>
+        <div style="padding: 20px; color: #333">
+          <ul style="list-style: none; padding: 0; margin: 0">
+            <li style="margin-bottom: 10px;">
+              <span style="color: #004080;">●</span> 
+              <strong>Name:</strong> ${name || ""}
+            </li>
+            <li style="margin-bottom: 10px;">
+              <span style="color: #004080;">●</span> 
+              <strong>Email:</strong> ${email || ""}
+            </li>
+            <li style="margin-bottom: 10px;">
+              <span style="color: #004080;">●</span> 
+              <strong>Phone:</strong> ${phone || ""}
+            </li>
+            <li style="margin-bottom: 10px;">
+              <span style="color: #004080;">●</span> 
+              <strong>Subject:</strong> ${subject || ""}
+            </li>
+            <li style="margin-bottom: 10px;">
+              <span style="color: #004080;">●</span> 
+              <strong>Message:</strong><br/>
+              <div style="margin-top: 5px; white-space: pre-line;">${message || ""}</div>
+            </li>
+          </ul>
+        </div>
+        <div
+          style="
+            background-color: #f2f2f2;
+            padding: 15px;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+          "
+        >
+          <p style="margin: 0">Regards,</p>
+          <p style="margin: 5px 0"><strong>AVOX Transport Team</strong></p>
+        </div>
+      </div>
+    `;
+
+      // Email ma'lumotlari
+      const mailOptions = {
+        from: '"AVOX" <aba06096@gmail.com>',
+        to: senderEmail, // Kimga yuboriladi
+        subject: 'Contact',
+        text: 'New Contact Form Submission', 
+        html: output// Agar HTML formatda yuborilsa
+      };
+      // Emailni jo'natish
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          res.status(403).json({ message: 'sent failed', error});
+          console.log(error);
+          
         } else {
           res.status(200).json({ message: 'sent successfully' });
         }
