@@ -23,6 +23,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'https://avoxs.vercel.app',
   'https://avoxs.netlify.app',
+  'https://www.avoxinc.com',
   'https://avox-beta.vercel.app',
   'https://autovehicleoperationexpress.com',
   'https://www.autovehicleoperationexpress.com',
