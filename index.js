@@ -46,7 +46,6 @@ app.use(cors({
   credentials: true,
 }));
 
-
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/navbar', navbarRouter);
