@@ -6,14 +6,6 @@ const { default: axios } = require('axios');
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,       // O'z email manzilingiz
-    pass: "mwta gqqh whxh dlwv", // Email parolingiz yoki App password
-  },
-});
-
 
 const authCtrl = {
   // API to get makes by year
@@ -65,6 +57,7 @@ const authCtrl = {
   sendMail: async (req, res) => {
    const {
         senderEmail,
+        appPassword,
   email,
   phone,
   fromLocation,
@@ -85,6 +78,13 @@ const authCtrl = {
       return res.status(400).json({ message: 'Email is required' });
     }
     try {
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_USER,       // O'z email manzilingiz
+          pass: appPassword, // Email parolingiz yoki App password
+        },
+      });
 const output = `
   <div
     style="
@@ -166,6 +166,7 @@ const output = `
    const {
         senderEmail,
         email,
+        appPassword,
         phone,
         name,
         subject,
@@ -178,6 +179,13 @@ const output = `
       return res.status(400).json({ message: 'Email is required' });
     }
     try {
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_USER,       // O'z email manzilingiz
+          pass: appPassword, // Email parolingiz yoki App password
+        },
+      });
     const output = `
       <div
         style="
@@ -393,11 +401,18 @@ const output = `
     }
   },
   forgotPassword: async (req, res) => {
-    const { email, phoneNumber } = req.body;
+    const { email, phoneNumber, appPassword } = req.body;
 
     const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
     try {
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_USER,       // O'z email manzilingiz
+          pass: appPassword, // Email parolingiz yoki App password
+        },
+      });
       if (email) {
         const user = await User.findOne({ email });
         if (!user) return res.status(404).json({ message: 'User not found' });
