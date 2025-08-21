@@ -18,6 +18,7 @@ const aboutSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    appPassword: String,
     private: String,
     homeTitle: String,
     homeContent: String,
