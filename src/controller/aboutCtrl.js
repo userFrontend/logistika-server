@@ -59,6 +59,8 @@ const aboutCtrl = {
     },
     update: async (req, res) => {
         const {id} = req.params
+        console.log(req.body);
+        
         if(!id){
             return res.status(403).json({message: 'insufficient information'})
         }
