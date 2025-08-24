@@ -10,7 +10,7 @@ const userRouter = require('./src/router/userRouter');
 const authRouter = require('./src/router/authRouter');
 const navbarRouter = require('./src/router/navbarRouter');
 const linkRouter = require('./src/router/linkRouter');
-const aboutRouter = require('./src/router/aboutRouter');
+const bookRouter = require('./src/router/bookRouter');
 const categoryRouter = require('./src/router/categoryRouter');
 const blogRouter = require('./src/router/blogRouter');
 const reviewRouter = require('./src/router/reviewRouter');
@@ -19,14 +19,14 @@ const reviewRouter = require('./src/router/reviewRouter');
 const app = express();
 const PORT = process.env.PORT || 4001;
 const allowedOrigins = [
-  'http://127.0.0.1:5173',
-  'http://localhost:5173',
+  'http://192.168.1.108:3000',
+  'http://localhost:3000',
   'https://avoxs.vercel.app',
   'https://avoxs.netlify.app',
   'https://www.avoxinc.com',
   'https://avox-beta.vercel.app',
-  'https://autovehicleoperationexpress.com',
-  'https://www.autovehicleoperationexpress.com',
+  'https://bookup.uz',
+  'https://www.bookup.uz',
 ];
 
 //middlewares
@@ -50,7 +50,7 @@ app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/navbar', navbarRouter);
 app.use('/api/link', linkRouter);
-app.use('/api/info', aboutRouter);
+app.use('/api/info', bookRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/blog', blogRouter);
 app.use('/api/review', reviewRouter);
